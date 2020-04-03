@@ -1,0 +1,31 @@
+.pagination {
+
+  width: 100%;
+
+  &__head-cell._stars {
+    cursor: default;
+  }
+
+  &__cell._name {
+    max-width: 150px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    @media (min-width: 600px) {
+      max-width: 200px;
+    }
+  }
+}
+
+.pagination-row {
+  cursor: pointer;
+}
+
+.pagination-cell {
+  display: inline-flex;
+  align-items: center;
+
+  &__star-icon {
+    margin-left: 10px;
+  }
+}

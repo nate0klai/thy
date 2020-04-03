@@ -1,0 +1,33 @@
+.modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  outline: 0;
+}
+
+.modal-error {
+  width: 200px;
+
+  &__icon {
+
+  }
+
+  &__text {
+    background-color: #fff;
+    border-radius: 10px;
+  }
+}
+
+.modal-info {
+  width: 200px;
+  background-color: #fff;
+  border-radius: 10px;
+
+  &__text {
+
+  }
+}

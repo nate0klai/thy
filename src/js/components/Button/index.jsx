@@ -18,4 +18,4 @@ Button.defaultProps = {
   title: 'button'
 };
 
-export default React.memo(Button, ({permanent}) => permanent === true);
+export default Button;

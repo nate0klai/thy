@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
+import PropTypes from 'prop-types';
 
 import "./styles.scss";
 
@@ -23,16 +24,32 @@ const headCells = [
   { id: 'stars', align: 'right', mod: '_stars', label: 'Stars' }
 ];
 
-export default function Pagination({count, list}) {
+const preparedList = (list, page, nameOrderDesc) => {
+  return list.sort((a, b) => {
+    if (a.name > b.name) {
+      return nameOrderDesc ? 1 : -1;
+    }
+    if (a.name < b.name) {
+      return nameOrderDesc ? -1 : 1;
+    }
+    return 0;
+  }).slice(page* 3, (page + 1) * 3)
+};
+
+const onRowClick = url => () => window.open(url);
+
+const emptyFn = () => null;
+
+function Pagination({count, list}) {
   const [page, setPage] = useState(0);
   const [nameOrderDesc, changeNameOrderDeac] = useState(true);
   const [modalInfoShown, toggleModalInfo] = useState(false);
 
-  const onChangePage = (event, value) => setPage(value);
-  const onColumnNameLabelClick = () => count === list.length ? changeNameOrderDeac(!nameOrderDesc) : toggleModalInfo(true);
-  const onRowClick = url => event => window.open(url);
-  const handleModalClose = () => toggleModalInfo(false);
-  const labelDisplayedRowsHandler = ({ from, to }) => 'page ' + Math.ceil(from / 3) + ' from ' + Math.ceil(count/3);
+  const onChangePage = useCallback((event, value) => setPage(value), []);
+  const onColumnNameLabelClick = useCallback(() => count === list.length ? changeNameOrderDeac(!nameOrderDesc) : toggleModalInfo(true), [count, list, nameOrderDesc]);
+  const handleModalClose = useCallback(() => toggleModalInfo(false), []);
+  const labelDisplayedRowsHandler = useCallback(({ from }) => 'page ' + Math.ceil(from / 3) + ' from ' + Math.ceil(count/3), [count]);
+  const nameOrderValue = useMemo(() => nameOrderDesc ? 'desc' : 'asc', [nameOrderDesc]);
 
   return (
     <Box className="pagination">
@@ -51,9 +68,9 @@ export default function Pagination({count, list}) {
                 >
                   <TableSortLabel
                     className={clsx('pagination__head-cell', {[mod]: mod})}
-                    active={true}
-                    direction={id === 'name' ? nameOrderDesc ? 'desc' : 'asc' : 'desc'}
-                    onClick={id === 'name' ? onColumnNameLabelClick : null}
+                    active
+                    direction={id === 'name' ? nameOrderValue : 'desc'}
+                    onClick={id === 'name' ? onColumnNameLabelClick : emptyFn}
                   >
                     {label}
                   </TableSortLabel>
@@ -62,15 +79,7 @@ export default function Pagination({count, list}) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {list.sort((a, b) => {
-              if (a.name > b.name) {
-                return nameOrderDesc ? 1 : -1;
-              }
-              if (a.name < b.name) {
-                return nameOrderDesc ? -1 : 1;
-              }
-              return 0;
-            }).slice(page* 3, (page + 1) * 3)
+            {preparedList(list, page, nameOrderDesc)
             .map(({name, stars, url}) => {
               return (
                 <TableRow
@@ -118,3 +127,14 @@ export default function Pagination({count, list}) {
     </Box>
   );
 }
+
+Pagination.propTypes = {
+  count: PropTypes.number.isRequired,
+  list: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    url: PropTypes.string,
+    stars: PropTypes.number
+  })).isRequired
+};
+
+export default Pagination;

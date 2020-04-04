@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 
 import { Container, Box } from '@material-ui/core';
 import Search from "components/Search";
@@ -24,9 +23,5 @@ class App extends Component {
     )
   }
 }
-
-App.propTypes = {
-  
-};
 
 export default App;

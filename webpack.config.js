@@ -13,7 +13,8 @@ module.exports = {
       components: path.resolve(__dirname, 'src/js/components/'),
       containers: path.resolve(__dirname, 'src/js/containers/'),
       actions: path.resolve(__dirname, 'src/js/actions/'),
-    }
+    },
+    extensions: ['.js', '.jsx']
   },
   module: {
     rules: [

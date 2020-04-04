@@ -13,7 +13,6 @@ const gitApiUserDataRequest = async (val, errorClbk) => {
 
 const gitApiReposDataRequest = async (name, page, count) => {
   try {
-    console.log('dsfsf', name, page, count);
       const {data} = await axios.get('https://api.github.com/users/' + name + '/repos?page=' + page + '&per_page=' + count);
       return {type: 'list', list: data.map(({name, stargazers_count: stars, html_url: url}) => ({name, stars, url}))};
   } catch ({message, response}) {

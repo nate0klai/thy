@@ -79,20 +79,14 @@ function getElemsByQuery (selector, instance = document) {
 
 function onReady (fn) {
   if (isProd) {
-    document.addEventListener('DOMContentLoaded', function (e) {
-      fn();
-    });
+    document.addEventListener('DOMContentLoaded', fn);
   } else {
-    window.addEventListener('load', function () {
-      fn();
-    });
+    window.addEventListener('load', fn);
   }
 }
 
 function onLoad (fn) {
-  window.addEventListener('load', function () {
-    fn();
-  });
+  window.addEventListener('load', fn);
 }
 
 function windowWidth () {

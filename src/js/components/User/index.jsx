@@ -7,7 +7,7 @@ import {gitApiReposDataRequest} from "actions/index";
 
 import "./styles.scss";
 
-const itemsPerPage = 30;
+const ITEMS_PER_PAGE = 30;
 
 class User extends Component {
   constructor(props) {
@@ -22,8 +22,7 @@ class User extends Component {
   getPageList = async () => {
     const {login} = this.props;
     const list = this.state.list || [];
-    const requestData = await gitApiReposDataRequest(login, (list.length/itemsPerPage) + 1, itemsPerPage);
-    console.log(requestData);
+    const requestData = await gitApiReposDataRequest(login, (list.length/ITEMS_PER_PAGE) + 1, ITEMS_PER_PAGE);
     switch (requestData.type) {
       case 'list': this.setState({list: [...list, ...requestData.list]}); return;
       case 'error': this.setState({errorDetected: true}); return;
@@ -58,7 +57,9 @@ User.defaultProps = {
 
 User.propTypes = {
   name: PropTypes.string,
-  avatar: PropTypes.string
+  avatar: PropTypes.string,
+  reposCount: PropTypes.number.isRequired,
+  login: PropTypes.string.isRequired,
 };
 
 export default User;

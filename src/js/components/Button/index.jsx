@@ -1,21 +1,29 @@
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
-import ButtonMui from '@material-ui/core/Button';
+import "./styles.scss";
 
-function Button({onClick, title}) {
+function Button({onClick, type, title, mod}) {
+  const onButtonClick = useCallback(onClick, [onClick]);
+  const className = useMemo(() => clsx('button', {[mod]: mod}), [mod]);
 
   return (
-    <ButtonMui variant="contained" color="primary" onClick={onClick}>{title}</ButtonMui>
+    <button type={type} className={className} onClick={onButtonClick}>{title}</button>
   );
 }
 
 Button.propTypes = {
-  title: PropTypes.string
+  type: PropTypes.string,
+  title: PropTypes.string,
+  onClick: PropTypes.func,
+  mod: PropTypes.string,
 };
 
 Button.defaultProps = {
-  title: 'button'
+  type: 'button',
+  title: 'button',
+  onClick: () => null
 };
 
 export default Button;

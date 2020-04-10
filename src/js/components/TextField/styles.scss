@@ -1,0 +1,23 @@
+.textfield {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  width: 250px;
+  padding: 10px 20px;
+
+  &__icon {
+    width: 20px;
+    flex-shrink: 0;
+  }
+
+  &__input {
+    outline: none;
+    margin-left: 10px;
+    height: 30px;
+    background-color: transparent;;
+    border: none;
+    flex-grow: 1;
+    font-size: 20px;
+  }
+}

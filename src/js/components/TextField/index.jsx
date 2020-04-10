@@ -1,38 +1,49 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, {useCallback, useMemo} from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
-import SearchIcon from '@material-ui/icons/Search';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextFieldMui from '@material-ui/core/TextField';
+import {Search as SearchIcon} from '@material-ui/icons';
 
-const useStyles = makeStyles(theme => ({
-  searchStyle: {
-    padding: theme.spacing(1),
-    background: 'white',
-    borderRadius: '35px'
-  }
-}));
+import "./styles.scss";
 
-export default function TextField({onInput}) {
-  const {searchStyle} = useStyles();
-  const input = React.createRef();
-  const inputListener = (event) => {
-    onInput(event.target.value);
-  };
+function TextField({onInput, onKeyEnter, icon, iconAlign, placeholder}) {
+  const inputListener = useCallback((event) => {
+    if (onInput) {
+      onInput(event.target.value);
+    }
+  }, [onInput]);
+  const keyDownHandler = useCallback(event => {
+    if (event.key === 'Enter' && onKeyEnter) {
+      onKeyEnter();
+    }
+  }, [onKeyEnter]);
+  const iconClassname = useMemo(() => clsx('textfield__icon', '_' + iconAlign), [iconAlign]);
 
   return (
-    <TextFieldMui
-      ref={input}
-      className={searchStyle}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        ),
-        disableUnderline: true
-      }}
-      onInput={inputListener}
-    />
+    <label className="textfield">
+      {icon === 'search' && <SearchIcon className={iconClassname}/>}
+      <input
+        type="text"
+        className="textfield__input"
+        placeholder={placeholder}
+        onInput={inputListener}
+        onKeyDown={keyDownHandler}/>
+    </label>
   );
 }
+
+TextField.propTypes = {
+  icon: PropTypes.oneOf(['', 'search']),
+  iconAlign: PropTypes.oneOf(['left', 'right']),
+  placeholder: PropTypes.string,
+  onInput: PropTypes.func,
+  onKeyEnter: PropTypes.func,
+};
+
+TextField.defaultProps = {
+  iconAlign: 'left',
+  placeholder: '',
+  icon: ''
+};
+
+export default TextField;

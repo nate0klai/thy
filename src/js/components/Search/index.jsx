@@ -15,7 +15,7 @@ const errorMessages = {
 };
 
 function Search() {
-  const [searchValue, setSearchValue] = useState('vsevolodroschupkin');
+  const [searchValue, setSearchValue] = useState('');
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState({detected: false, data: null});
 
@@ -44,7 +44,7 @@ function Search() {
   return (
     <Box className="search">
       <Box className="search__textfield">
-        <TextField onInput={onSearchFieldInputListener}/>
+        <TextField onInput={onSearchFieldInputListener} icon="search" onKeyEnter={onSearchButtonClickListener} placeholder="enter someone login"/>
       </Box>
       <Box className="search__button" mt={2}>
         <Button onClick={onSearchButtonClickListener} title="search!"/>
